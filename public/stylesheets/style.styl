@@ -1,8 +1,58 @@
 body
-  padding: 50px
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+	padding: 50px
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 a
-  color: #00B7FF
+	color: #00B7FF
 h1
-  background:url("../images/logo.png") -50px -50px no-repeat
-  padding-top:60px
+	background:url("../images/logo.png") -50px -50px no-repeat
+	padding-top:60px
+
+
+
+// Component
+
+fieldWidth=600px
+zoneWidth = fieldWidth/4.5
+borderField = 2px solid black
+fieldColor = #D3F5EE
+zoneColor = #BEE4E4
+outsideColor = #A4C5DB
+
+#field
+	height:2.5*zoneWidth
+	background:outsideColor
+	overflow:hidden
+	position:relative
+	width:zoneWidth*4
+	padding:0.25*zoneWidth;
+	margin:auto;
+
+	#inner-field
+		height:100%
+		background:fieldColor
+		overflow:hidden
+		position:relative
+		border:borderField
+
+		.zone
+			background:zoneColor
+			height:zoneWidth
+			width:zoneWidth
+			border-radius:50%
+			position:absolute
+			top:50%
+			margin-top : -0.5*zoneWidth
+			border:borderField
+		#zone-left
+			left : -0.5*zoneWidth
+		#zone-right
+			right : -0.5*zoneWidth
+
+		#middle
+			border-left:borderField
+			height:100%
+			width:0
+			margin-left:50%
+
+
+
