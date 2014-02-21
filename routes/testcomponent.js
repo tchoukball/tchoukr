@@ -4,5 +4,5 @@
  */
 
 exports.test = function(req, res){
-  res.render('testcomponent',{});
+  res.render('testcomponent',{title:"Test component"});
 };

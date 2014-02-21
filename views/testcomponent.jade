@@ -1,8 +1,12 @@
 extends layout
 
-block javascripts
-  script(src="javascripts/jquery.field.js")
+block append styles
+  link(rel='stylesheet', href='/stylesheets/component.css')
 
+block append javascripts
+  script(src="javascripts/jquery.field.js")
+  script.
+    $('#field').tchoukr();
 block content
   div#field
     div#inner-field

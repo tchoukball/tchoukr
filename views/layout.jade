@@ -1,8 +1,11 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title= title||"tchoukr"
+    block styles
+      link(rel='stylesheet', href='/stylesheets/style.css')
+
   body
     block content
     block javascripts
+      script(src='javascripts/jquery.min.js')
