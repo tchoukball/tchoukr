@@ -1,5 +1,25 @@
 extends layout
 
+
+block append javascripts
+  script.
+    $('#fieldcontent').tchoukr();
+
 block content
-  h1= title
-  p Welcome to #{title}
+
+
+  #home-title A brand new tchoukball app for stats
+
+  #welcome
+    #welcomecontent
+      #connect
+        p.
+          Improve your coaching with live statistics.
+          Know your team more than anybody else.
+          All the results during the match.
+        a(href='/auth/facebook') Facebook Connect
+      #field
+        #fieldcontent
+
+block append footer
+  .credits Background picture: phototchouk.org

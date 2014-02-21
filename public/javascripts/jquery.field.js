@@ -44,6 +44,10 @@
 
             };
 
+            this.addPoint = function(){
+                console.log("Point");
+            }
+
             this.resize = function(){
                 $field.height($blockComponent.width()/fieldRatio);
                 $field.css('padding',$field.height()*paddingRatio);

@@ -1,8 +1,103 @@
+*
+	padding 0
+	margin 0
+
 body
-	padding: 50px
-	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+	font 14px "Lucida Grande", Helvetica, Arial, sans-serif
+
 a
-	color: #00B7FF
-h1
-	background:url("../images/logo.png") -50px -50px no-repeat
-	padding-top:60px
+	color #00B7FF
+
+#header
+	background: rgb(252,234,187); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(252,234,187,1) 0%, rgba(252,205,77,1) 50%, rgba(248,181,0,1) 51%, rgba(251,223,147,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,234,187,1)), color-stop(50%,rgba(252,205,77,1)), color-stop(51%,rgba(248,181,0,1)), color-stop(100%,rgba(251,223,147,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 50%,rgba(248,181,0,1) 51%,rgba(251,223,147,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 50%,rgba(248,181,0,1) 51%,rgba(251,223,147,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 50%,rgba(248,181,0,1) 51%,rgba(251,223,147,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 50%,rgba(248,181,0,1) 51%,rgba(251,223,147,1) 100%); /* W3C */
+
+	padding 10px
+	font-weight bold
+	box-shadow 0 0 5px rgba(0,0,0,0.5)
+
+	h1
+		height 0
+		overflow hidden
+		padding-top 1em
+		font-size 1.6em
+		width 3.82em
+		background url("../images/logo.png") 0 0 no-repeat
+		background-size contain
+
+#footer
+	font-size 0.8em
+	color #ccc
+	text-align center
+	margin 30px 10px
+
+#home-title
+	font-family 'Varela Round', sans-serif
+	text-align center
+	font-size 2.8em
+	margin 50px 20px
+
+#welcome
+	background: rgb(169,228,247); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(169,228,247,1) 0%, rgba(15,180,231,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(169,228,247,1)), color-stop(100%,rgba(15,180,231,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(169,228,247,1) 0%,rgba(15,180,231,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(169,228,247,1) 0%,rgba(15,180,231,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(169,228,247,1) 0%,rgba(15,180,231,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(169,228,247,1) 0%,rgba(15,180,231,1) 100%); /* W3C */
+
+	text-align center
+	margin : 50px 0
+
+
+	#welcomecontent
+		background transparent url('../images/welcome.png') center top no-repeat
+		padding 20px
+
+	#field
+	#connect
+		display inline-block
+		width 44%
+		padding 0 3%
+		max-width 400px
+
+	#fieldcontent
+		box-shadow 2px 2px 5px rgba(0,0,0,0.5)
+		transform:rotate(10deg);
+		-ms-transform:rotate(10deg); /* IE 9 */
+		-webkit-transform:rotate(10deg); /* Opera, Chrome, and Safari */
+		border-radius 15px
+		overflow hidden
+
+	#connect
+
+		p
+			background rgba(255,255,255,0.2)
+			border-radius 10px
+			padding 10px
+			line-height 2em
+			margin auto
+			margin-bottom 50px
+			max-width 250px
+
+		a
+			background #fc0
+			color #000
+			padding 10px 30px
+
+	@media screen and (max-width: 600px)
+		#field
+			display none
+		#connect
+			width 94%
+			p
+				max-width none
+
+#live
+	max-width 900px
+	margin auto

@@ -1,16 +1,11 @@
 extends layout
 
-block append styles
-  link(rel='stylesheet', href='/stylesheets/component.css')
-
 block append javascripts
-  script(src="javascripts/jquery.field.js")
   script.
-    $('#field').tchoukr();
+    $tchoukr = $('#field').tchoukr();
+    $tchoukr.addPoint();
+
 block content
-  div#field
-    div#inner-field
-      div.zone#zone-left
-      div.zone#zone-right
-      div#middle
-  div#export
+  #live
+    #field Loading...
+    #export
