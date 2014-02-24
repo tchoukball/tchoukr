@@ -11,12 +11,15 @@ html
     block header
       #header
         h1 tchoukr
-    block content
+
+    #content
+      block content
+    #widecontent
+      block widecontent
 
     #footer
       block footer
-        #copyright
-          &copy; tchoukr #{moment().format('YYYY')}
+        #copyright &copy; tchoukr #{moment().format('YYYY')}
     block javascripts
       script(src='javascripts/jquery.min.js')
       script(src="javascripts/jquery.field.js")

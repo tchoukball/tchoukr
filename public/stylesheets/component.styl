@@ -3,37 +3,37 @@
 
 // Component
 
-borderField = 2px solid black
-fieldColor = #D3F5EE
-zoneColor = #BEE4E4
-outsideColor = #A4C5DB
+$borderField = 2px solid black
+$fieldColor = #D3F5EE
+$zoneColor = #BEE4E4
+$outsideColor = #A4C5DB
 
 .tchoukr
 
 	.field
-		background outsideColor
+		background $outsideColor
 
 		.inner-field
 			height 100%
-			background fieldColor
+			background $fieldColor
 			overflow hidden
 			position relative
-			border borderField
+			border $borderField
 			border-radius 5px
 
 			.zone
-				background zoneColor
+				background $zoneColor
 				border-radius 50%
 				position absolute
 				top 50%
-				border:borderField
+				border:$borderField
 
 				.zone:hover {
 
 				}
 
 			.middle
-				border-left:borderField
+				border-left:$borderField
 				height:100%
 				width:0
 				margin-left:50%
