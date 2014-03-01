@@ -1,0 +1,21 @@
+# Used in every mode
+default:
+  server:
+    port: 3000
+    secretkey: thisissecret
+  app:
+    title: Tchoukr
+  passport:
+    facebook:
+      appid: 154545311302386
+      appsecret: 863c864c33fd64a86bdbb8573415149c
+      callbackurl: http://localhost:3000/auth/facebook/callback
+
+# Production environment
+dev:
+  server:
+    port: 3000
+prod:
+  server:
+    port: 80
+    compresscss: true

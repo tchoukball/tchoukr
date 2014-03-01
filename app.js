@@ -3,13 +3,23 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var routes = require('./routes');
-var testcomponent = require('./routes/testcomponent');
-var http = require('http');
-var path = require('path');
+var
+    express = require('express'),
+    routes = require('./routes'),
+    testcomponent = require('./routes/testcomponent'),
+    http = require('http'),
+    path = require('path'),
+    passport = require('passport'),
+    ymlConfig = require('yaml-config')
+    app = express(),
+    server = http.createServer(app)
+;
 
-var app = express();
+
+
+var conf = ymlConfig.readConfig('./config.yml',app.get('env'));
+app.set('conf',conf);
+app.set('db',require('./inc/db'));
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -19,21 +29,28 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+var cookieParser = express.cookieParser(conf.server.secretkey);
+app.use(cookieParser);
 app.use(express.session());
-app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
+
+require('./inc/login').app(app,passport);
+
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+
+
 app.get('/', routes.index);
 app.get('/component', testcomponent.test);
 
+
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log(conf.app.title+' server listening on port ' + app.get('port'));
 });

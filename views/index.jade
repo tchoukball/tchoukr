@@ -17,7 +17,10 @@ block widecontent
           Improve your coaching with live statistics.
           Know your team more than anybody else.
           All the results during the match.
-        a(href='/auth/facebook') Facebook Connect
+        if(user)
+          a(href='/logout') Logout
+        else
+          a(href='/auth/facebook') Facebook Connect
       #field
         #fieldcontent
 
