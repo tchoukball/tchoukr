@@ -14,6 +14,13 @@ var schemas = {
         email: { type : String , lowercase : true},
         name : String,
         created: {type: Date, default: Date.now}
+    }),
+
+    /* Events */
+    events : new Schema({
+        name : {type:String,match: /^[a-z0-9\s-]{4,30}$/i},
+        _users : [{ type: Schema.Types.ObjectId, ref: 'users' }],
+        created: {type: Date, default: Date.now}
     })
 };
 

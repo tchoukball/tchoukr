@@ -1,0 +1,18 @@
+extends layout
+
+
+block content
+
+  h2 Events list
+
+  form(action='/newevent',method='post')
+    fieldset#new-event
+      input(type='text',name='newevent',placeholder="Event's name")
+      input.button(type='submit',value='create event')
+
+
+  if eventlist
+    table
+  else
+    #no-event
+

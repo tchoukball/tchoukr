@@ -65,6 +65,7 @@ app.get('*',function(req,res,next){
 });
 
 app.get('/', routes.index);
+app.post('/newevent', routes.newevent);
 app.get('/component', testcomponent.test);
 
 app.use(app.router);
