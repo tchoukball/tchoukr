@@ -12,7 +12,8 @@ var
     passport = require('passport'),
     ymlConfig = require('yaml-config')
     app = express(),
-    server = http.createServer(app)
+    server = http.createServer(app),
+    SessionStore = require("session-mongoose")(express)
 ;
 
 
@@ -30,10 +31,26 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser(conf.server.secretkey));
-app.use(express.session());
+
+// Session
+var sessionStore = new SessionStore({
+    interval: 3600*24*30*1000,
+    connection: app.get('db').db.connection // <== custom connection
+});
+var cookieParser = express.cookieParser(conf.server.secretkey);
+app.set('sessionStore',sessionStore);
+app.set('cookieParser',cookieParser);
+app.use(cookieParser);
+app.use(express.session({
+    key: conf.server.sessioncookie,
+    store: sessionStore,
+    secret: conf.server.secretkey,
+    cookie: {maxAge: 3600*24*31*365*1000 },
+}));
+
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.locals.moment = require('moment');
 

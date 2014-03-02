@@ -12,6 +12,7 @@
     "stylus": "*",
     "moment": "*",
     "mongoose":"*",
+    "session-mongoose":"*",
     "passport":"*",
     "passport-facebook":"*"
   }
