@@ -20,7 +20,9 @@ block widecontent
         if(user)
           a(href='/logout') Logout
         else
-          a(href='/auth/facebook') Facebook Connect
+          a(href='/auth/facebook')
+            i.fa.fa-facebook-square
+            span= " Facebook Connect"
       #field
         #fieldcontent
 

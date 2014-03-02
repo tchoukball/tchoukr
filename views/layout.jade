@@ -1,21 +1,25 @@
 doctype html
 html
   head
-    title= title||"tchoukr"
+    if title
+      title= title + " · " + locals.appName
+    else
+      title= locals.appName
     block styles
       link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Varela+Round', type='text/css')
       link(rel='stylesheet', href='/stylesheets/style.css', type='text/css')
       link(rel='stylesheet', href='/stylesheets/component.css', type='text/css')
+      link(rel='stylesheet', href='/font-awesome/css/font-awesome.min.css', type='text/css')
 
   body
     block header
       #header
-        h1 tchoukr
+        h1= locals.title
         if locals.user
           #user-infos
+            span= locals.user.name + ' '
             a#logout(href='/logout')
-              b Logout
-              span= " ("+locals.user.name+")"
+              i.fa.fa-sign-out
 
     #content
       block content

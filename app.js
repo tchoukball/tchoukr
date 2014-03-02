@@ -43,6 +43,7 @@ require('./inc/login').app(app,passport);
 
 app.get('*',function(req,res,next){
     res.locals.user = req.user;
+    res.locals.appName = conf.app.title;
     next();
 });
 

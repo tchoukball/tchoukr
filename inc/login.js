@@ -65,14 +65,10 @@ exports.app = function(app,passport){
 
     passport.deserializeUser(function(id, done) {
         db.tables.users.findById(id,function(err,user){
-            console.log(err);
             if(err) done(err);
             if(user){
-                console.log("Ok1");
                 user.provider = 'facebook';
                 done(null,user);
-                console.log("Ok2");
-
             }else{
                 done(null,false);//done("User not found");
             }
