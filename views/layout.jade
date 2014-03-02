@@ -11,6 +11,11 @@ html
     block header
       #header
         h1 tchoukr
+        if locals.user
+          #user-infos
+            a#logout(href='/logout')
+              b Logout
+              span= " ("+locals.user.name+")"
 
     #content
       block content

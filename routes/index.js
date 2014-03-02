@@ -4,6 +4,6 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Tchoukr.com', user:req.user });
+  res.render('index');
 };
 
