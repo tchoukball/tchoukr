@@ -74,6 +74,7 @@ app.get('/event/:eventid', routes.eventDetail);
 app.post('/newevent', routes.eventNew);
 app.get('/component', testcomponent.test);
 app.get('/admin/clubs', adminRoutes.clubs);
+app.post('/admin/clubs', adminRoutes.clubs);
 
 app.use(app.router);
 

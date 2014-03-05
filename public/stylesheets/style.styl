@@ -3,6 +3,8 @@ $mobileLimit = 500px
 $responsiveTooWide = "(min-width:"+$maxBodyWidth+")"
 $responsiveMobile = "(max-width:"+$mobileLimit+")"
 $responsiveDesktop = "(min-width:"+($mobileLimit+1)+")"
+$mainColor = #00B7FF
+$titleFont = 'Varela Round', sans-serif
 
 
 *
@@ -13,7 +15,7 @@ body
 	font 14px "Lucida Grande", Helvetica, Arial, sans-serif
 
 a
-	color #00B7FF
+	color $mainColor
 
 #header
 	background: rgb(252,234,187); /* Old browsers */
@@ -26,21 +28,25 @@ a
 
 	font-weight bold
 	box-shadow 0 0 5px rgba(0,0,0,0.5)
-	padding 10px 0
+	padding 8px 0
 	margin 0 auto 10px auto
 	max-width $maxBodyWidth
 
 
 	h1
-		height 0
-		overflow hidden
-		padding-top 1em
-		font-size 1.6em
-		width 3.82em
-		background url("../images/logo.png") 0 0 no-repeat
-		background-size contain
-		margin 0 10px
 		display inline-block
+		font-size 1.6em
+
+		a
+			height 0
+			overflow hidden
+			padding-top 1em
+			font-size 1em
+			width 3.82em
+			background url("../images/logo.png") 0 0 no-repeat
+			background-size contain
+			margin 0 10px
+			display inline-block
 
 	#user-infos
 		float right
@@ -58,15 +64,18 @@ a
 	text-align center
 	margin 30px 10px
 
-@media $responsiveTooWide
-	#content
+#content
+	padding 0 5px
+
+	@media $responsiveTooWide
 		max-width $maxBodyWidth
 		margin auto
+		padding 0
 
 
 
 #home-title
-	font-family 'Varela Round', sans-serif
+	font-family $titleFont
 	text-align center
 	font-size 2.8em
 	margin 50px 20px
@@ -123,7 +132,6 @@ a
 			display inline-block
 			margin-bottom 10px
 
-
 	@media $responsiveMobile
 		#field
 			display none
@@ -131,3 +139,42 @@ a
 			width 94%
 			p
 				max-width none
+
+.empty-list
+	background #eee
+	padding 50px 20px
+	text-align center
+	color #999
+	text-shadow 0 1px 0 #fff
+	font-weight bold
+
+h2
+	margin-bottom 20px
+	padding 10px 0
+	border-bottom 1px solid #eee
+	font-size 2em
+	font-family $titleFont
+
+table, fieldset, .empty-list
+	margin 10px 0
+	border-radius 5px
+
+fieldset
+	padding 10px
+	border 3px solid $mainColor
+
+table
+	width 100%
+	border-collapse separate
+	border 2px solid #ccc
+	background #eee
+
+	td, th
+		border 1px solid #ccc
+		padding 2px 5px
+		background #fff
+		border-radius 2px
+
+		a
+			display block
+			text-align center

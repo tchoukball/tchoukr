@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h2
+    i.fa.fa-users
+    span= ' '+title
+
+  if clubs
+    each club in clubs
+      div
+        h3= club.name
+  else
+    #no-club.empty-list No club in the database

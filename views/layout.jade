@@ -14,7 +14,8 @@ html
   body
     block header
       #header
-        h1= locals.title
+        h1
+          a(href='/')= locals.title
         if locals.user
           #user-infos
             span= locals.user.name + ' '
@@ -29,6 +30,9 @@ html
     #footer
       block footer
         #copyright &copy; tchoukr #{moment().format('YYYY')}
+        if locals.user && locals.user.isAdmin
+          #footer-admin
+            a(href='/admin/clubs') Manage clubs
     block javascripts
       script(src='/javascripts/jquery.min.js')
       script(src="/javascripts/jquery.field.js")
