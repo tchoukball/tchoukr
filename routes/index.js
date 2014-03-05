@@ -1,22 +1,43 @@
 
-/*
- * GET home page.
- */
+
+
+var redirectHome = function(res){
+    res.redirect('/');
+}
 
 exports.index = function(req, res){
     if(! req.isAuthenticated())
         return res.render('index');
 
-    res.render('home-member');
+    var db = req.app.get('db');
+    db.tables.events.find({'_users':req.user._id},function(err,events){
+        res.render('home-member',{eventlist:events});
+    });
+
 };
 
-exports.newevent = function(req,res){
+exports.eventDetail = function(req,res){
+    if(req.params.eventid){
+        var id = req.params.eventid ;
+        var db = req.app.get('db');
 
-    if(! req.isAuthenticated()) res.redirect('/');
+        db.tables.events.findById(id,function(err,event){
+            if(! event)
+                redirectHome(res);
+            else{
+                res.render('event-details',{title:event.name,event:event});
+            }
+        });
 
-    var redirect = function(){
-        res.redirect('/');
+    }else{
+        redirectHome(res);
     }
+}
+
+exports.eventNew = function(req,res){
+
+    if(! req.isAuthenticated()) redirectHome(res);
+
 
     var db = res.app.get('db');
 
@@ -36,7 +57,7 @@ exports.newevent = function(req,res){
                         res.end('Wrong name')
                     }else{
                         newEvent.save();
-                        redirect();
+                        redirectHome(res);
                     }
                 })
             }
@@ -44,7 +65,7 @@ exports.newevent = function(req,res){
         });
 
     }else{
-        redirect();
+        redirectHome(res);
     }
 
 

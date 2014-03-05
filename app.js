@@ -5,8 +5,6 @@
 
 var
     express = require('express'),
-    routes = require('./routes'),
-    testcomponent = require('./routes/testcomponent'),
     http = require('http'),
     path = require('path'),
     passport = require('passport'),
@@ -64,9 +62,18 @@ app.get('*',function(req,res,next){
     next();
 });
 
+
+var
+    routes = require('./routes'),
+    adminRoutes = require('./routes/admin'),
+    testcomponent = require('./routes/testcomponent')
+;
+
 app.get('/', routes.index);
-app.post('/newevent', routes.newevent);
+app.get('/event/:eventid', routes.eventDetail);
+app.post('/newevent', routes.eventNew);
 app.get('/component', testcomponent.test);
+app.get('/admin/clubs', adminRoutes.clubs);
 
 app.use(app.router);
 

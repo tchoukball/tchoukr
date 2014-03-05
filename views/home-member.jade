@@ -3,16 +3,23 @@ extends layout
 
 block content
 
-  h2 Events list
+  h2
+    i.fa.fa-list
+    span= ' Events list'
 
   form(action='/newevent',method='post')
     fieldset#new-event
       input(type='text',name='newevent',placeholder="Event's name")
-      input.button(type='submit',value='create event')
+      input.button(type='submit',value='create new event')
 
 
   if eventlist
     table
+      each event in eventlist
+        tr
+          td= event.name
+          td
+            a(href='/event/'+event._id) details
   else
-    #no-event
+    #no-event No event
 
