@@ -10,3 +10,15 @@ block content
     div
   else
     #no-match.empty-list No match planned for this event.
+
+  form(action=formAction,method='post')
+    fieldset
+
+      each letter in ["A","B"]
+        label(for='team'+letter)= "Team " + letter
+        select(name='team'+letter,id='team'+letter)
+          option(disabled,selected) Select a team
+          optgroup(label='All teams')
+            each team in allTeams
+              option(value=team.id)= team.name
+      input(value='create a new match',type='submit').btn

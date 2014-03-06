@@ -21,11 +21,25 @@ exports.eventDetail = function(req,res){
         var id = req.params.eventid ;
         var db = req.app.get('db');
 
+        console.log(req);
+
+        if(req.body.teamA && req.body.teamB){
+            res.end("Add match");
+        }
+
+
         db.tables.events.findById(id,function(err,event){
             if(! event)
                 redirectHome(res);
             else{
-                res.render('event-details',{title:event.name,event:event});
+                db.tables.teamNames.find({isAvailable:true}).sort('name').exec(function(err,teams){
+                    res.render('event-details',{
+                        title:event.name,
+                        event:event,
+                        formAction:req.originalUrl,
+                        allTeams:teams
+                    });
+                })
             }
         });
 

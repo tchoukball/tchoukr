@@ -71,16 +71,23 @@ var
     testcomponent = require('./routes/testcomponent')
 ;
 
+// Index
 app.get('/', routes.index);
+
+// Events
 app.get('/event/:eventid', routes.eventDetail);
+app.post('/event/:eventid', routes.eventDetail);
 app.post('/newevent', routes.eventNew);
+
+// Tests
 app.get('/component', testcomponent.test);
+
+// Admin
 app.get('/admin/clubs', adminRoutes.clubs);
 app.post('/admin/clubs', adminRoutes.clubs);
 
+
 app.use(app.router);
-
-
 
 // development only
 if ('development' == app.get('env')) {

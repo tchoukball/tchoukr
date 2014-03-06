@@ -13,7 +13,7 @@ exports.clubs = function(req, res){
         var db = req.app.get('db');
 
         function redirect(){
-            res.redirect(req.route.path);
+            res.redirect(req.originalUrl);
         }
 
         function displayResult(){
