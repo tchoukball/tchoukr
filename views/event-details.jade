@@ -5,9 +5,15 @@ block content
     i.fa.fa-trophy
     span= ' '+event.name
 
-  if matchs
+  if matchsList
 
-    div
+    table
+      each match in matchsList
+        tr
+          td= match._teamA.name
+          td= match._teamB.name
+
+
   else
     #no-match.empty-list No match planned for this event.
 

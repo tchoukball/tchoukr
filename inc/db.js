@@ -48,8 +48,8 @@ var schemas = {
 
     /* Matchs */
     matchs : new Schema({
-        _teamA : [{ type: Schema.Types.ObjectId, ref: pf+'teamNames' }],
-        _teamB : [{ type: Schema.Types.ObjectId, ref: pf+'teamNames' }],
+        _teamA : { type: Schema.Types.ObjectId, ref: pf+'teamNames' },
+        _teamB : { type: Schema.Types.ObjectId, ref: pf+'teamNames' },
         _event : { type: Schema.Types.ObjectId, ref: pf+'events' },
         created: {type: Date, default: Date.now}
     })
