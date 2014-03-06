@@ -11,9 +11,20 @@ block content
       input(type='text',name='newclub',placeholder="Club's name")
       input.button(type='submit',value='create new club')
 
-  if clubsList
-    each club in clubsList
-      div
-        h3= club.name
+  form(action='/admin/clubs',method='post')
+    fieldset#new-event
+      input(type='text',name='newteam',placeholder="Team name")
+      select(name='clubid')
+        option(value='',disabled='disabled',selected) Choose a club
+        each club in clubsList
+          option(value=club._id)= club.name
+      input.button(type='submit',value='create new team')
+
+  if teamsList
+    table
+      each team in teamsList
+        tr
+          td= team.name
+          td= clubsList[team._team._club].name
   else
     #no-club.empty-list No club in the database

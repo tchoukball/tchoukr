@@ -6,6 +6,8 @@ var mongoose = require('mongoose'),
 
 mongoose.connect('mongodb://localhost/tchoukr');
 
+var pf = 'data_';
+
 var schemas = {
 
     /* Connexion */
@@ -20,39 +22,42 @@ var schemas = {
     /* Events */
     events : new Schema({
         name : {type:String,match: /^[a-z0-9\s-]{4,30}$/i},
-        _users : [{ type: Schema.Types.ObjectId, ref: 'users' }],
+        _users : [{ type: Schema.Types.ObjectId, ref: pf+'users' }],
         created: {type: Date, default: Date.now}
     }),
 
     /* Club */
     clubs : new Schema({
-        name : String
+        name : {type:String,match: /^.{4,50}$/i},
+        created: {type: Date, default: Date.now}
     }),
 
-    /* New alias */
+    /* Alias */
     teamNames : new Schema({
-        name : String,
-        _team : { type: Schema.Types.ObjectId, ref: 'teams' },
+        name : {type:String,match: /^.{4,50}$/i},
+        isAvailable : {type : Boolean, default : true},
+        _team : { type: Schema.Types.ObjectId, ref: pf+'teams' },
+        created: {type: Date, default: Date.now}
     }),
 
     /* Team */
     teams : new Schema({
-        _club : { type: Schema.Types.ObjectId, ref: 'clubs' },
+        _club : { type: Schema.Types.ObjectId, ref: pf+'clubs' },
         created: {type: Date, default: Date.now}
     }),
 
     /* Matchs */
     matchs : new Schema({
-        _teamA : [{ type: Schema.Types.ObjectId, ref: 'teamNames' }],
-        _teamB : [{ type: Schema.Types.ObjectId, ref: 'teamNames' }],
-        _event : { type: Schema.Types.ObjectId, ref: 'events' },
+        _teamA : [{ type: Schema.Types.ObjectId, ref: pf+'teamNames' }],
+        _teamB : [{ type: Schema.Types.ObjectId, ref: pf+'teamNames' }],
+        _event : { type: Schema.Types.ObjectId, ref: pf+'events' },
         created: {type: Date, default: Date.now}
     })
 };
 
 var tables = {};
 for(var i in schemas){
-    tables[i] = mongoose.model('data_'+i,schemas[i]);
+    tables[i] = mongoose.model(pf+i,schemas[i]);
 }
 
 exports.schemas = schemas ;

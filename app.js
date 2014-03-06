@@ -55,12 +55,14 @@ app.locals.moment = require('moment');
 
 require('./inc/login').app(app,passport);
 
-
-app.get('*',function(req,res,next){
+function addLocals(req,res,next){
     res.locals.user = req.user;
     res.locals.appName = conf.app.title;
     next();
-});
+}
+
+app.get('*',addLocals);
+app.post('*',addLocals);
 
 
 var
