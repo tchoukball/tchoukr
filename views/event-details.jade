@@ -8,11 +8,15 @@ block content
     i.fa.fa-trophy
     span= ' '+event.name
 
+  - var teamsPlaying = {}
+
   if matchsList.length
 
     table.listMatches
       - prevDay = 0
       each match in matchsList
+        - teamsPlaying[match._teamA._id] = match._teamA
+        - teamsPlaying[match._teamB._id] = match._teamB
         - currentDay = moment(match.dateStart).format('ddd DD MMM YY')
         if(prevDay != currentDay)
           - prevDay = currentDay
@@ -34,11 +38,23 @@ block content
   else
     #no-match.empty-list No match planned for this event.
 
+  - var finalTeams = []
+  each team in teamsPlaying
+    -finalTeams.push(team)
+
+  - finalTeams.sort(function(a,b){ if(a > b) return 1; else return -1; })
+
   mixin optionsTeams()
     option(disabled,selected) Select a team
-      optgroup(label='All teams')
-        each team in allTeams
+
+    //if(teamsPlaying.length)
+    if(finalTeams.length)
+      optgroup(label='Teams playing')
+        each team in finalTeams
           option(value=team.id)= team.name
+    optgroup(label='All teams')
+      each team in allTeams
+        option(value=team.id)= team.name
 
   if(isEventAdmin)
     form(action=formAction,method='post')

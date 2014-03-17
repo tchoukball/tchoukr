@@ -65,6 +65,7 @@ exports.eventDetail = function(req,res){
                         }
 
                         if(teamA == teamB){
+                            console.log("Same teams");
                             return res.redirect(req.originalUrl);
                         }
 
