@@ -20,7 +20,7 @@ block content
           option(value=club._id)= club.name
       input.button(type='submit',value='create new team')
 
-  if teamsList
+  if teamsList.length
     table
       each team in teamsList
         tr

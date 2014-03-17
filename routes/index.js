@@ -1,8 +1,16 @@
 
-
+function isValidDate(d) {
+    if ( Object.prototype.toString.call(d) !== "[object Date]" )
+        return false;
+    return !isNaN(d.getTime());
+}
 
 var redirectHome = function(res){
     res.redirect('/');
+}
+
+function isEventAdmin(req,event){
+    return (req.user && event._users.indexOf(req.user._id) > -1)
 }
 
 exports.index = function(req, res){
@@ -26,23 +34,47 @@ exports.eventDetail = function(req,res){
                 redirectHome(res);
             else{
 
+                var isThisEventAdmin = isEventAdmin(req,event);
+
                 if(req.body.teamA || req.body.teamB){
+
+                    if(! isThisEventAdmin)
+                        return res.redirect(req.originalUrl);
+
                     var teamA = req.body.teamA;
                     var teamB = req.body.teamB;
                     if(! teamA || ! teamB){
-                        console.log(teamA,teamB);
-                        return redirect(req.originalUrl);
+                        return res.redirect(req.originalUrl);
                     }else{
 
+                        var timezone = -1*(parseInt(req.body.timezone)+1-1) ;
+                        if(timezone >= 0) timezone = '+'+timezone ;
+                        var timeString = req.body.datestart + " " + req.body.hourstart + ':00 ' + timezone ;
+                        var date = new Date(timeString);
+                        console.log(timeString,"=",date);
+                        console.log("Body",req.body);
+
+                        if(! isValidDate(date)){
+                            console.log("Invalid date");
+                            return res.redirect(req.originalUrl);
+                        }
+
+                        if(Math.abs(date-new Date()) > 365*3600*24*1000){
+                            console.log("Date too far from today");
+                            return res.redirect((req.originalUrl));
+                        }
+
                         if(teamA == teamB){
-                            return redirect(req.originalUrl);
+                            return res.redirect(req.originalUrl);
                         }
 
                         var newMatch  = new db.tables.matchs({
                             _teamA: teamA,
                             _teamB: teamB,
-                            _event: event._id
+                            _event: event._id,
+                            dateStart : date
                         });
+
 
                         newMatch.validate(function(err,test){
                             if(err){
@@ -58,16 +90,15 @@ exports.eventDetail = function(req,res){
                     }
                 }else db.tables.teamNames.find({isAvailable:true}).sort('name').exec(function(err,teams){
 
-                    db.tables.matchs.find().populate('_teamA _teamB').exec(function(err,matchs){
-
-                        console.log(matchs);
+                    db.tables.matchs.find({_event:event._id}).populate('_teamA _teamB').exec(function(err,matchs){
 
                         res.render('event-details',{
                             title:event.name,
                             event:event,
                             formAction:req.originalUrl,
                             allTeams:teams,
-                            matchsList:matchs
+                            matchsList:matchs,
+                            isEventAdmin: isThisEventAdmin
                         });
 
                     });

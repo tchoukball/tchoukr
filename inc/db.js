@@ -51,6 +51,7 @@ var schemas = {
         _teamA : { type: Schema.Types.ObjectId, ref: pf+'teamNames' },
         _teamB : { type: Schema.Types.ObjectId, ref: pf+'teamNames' },
         _event : { type: Schema.Types.ObjectId, ref: pf+'events' },
+        dateStart : { type: Date, default: Date.now },
         created: {type: Date, default: Date.now}
     })
 };

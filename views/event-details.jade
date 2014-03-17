@@ -5,7 +5,7 @@ block content
     i.fa.fa-trophy
     span= ' '+event.name
 
-  if matchsList
+  if matchsList.length
 
     table
       each match in matchsList
@@ -17,14 +17,25 @@ block content
   else
     #no-match.empty-list No match planned for this event.
 
-  form(action=formAction,method='post')
-    fieldset
+  mixin optionsTeams()
+    option(disabled,selected) Select a team
+      optgroup(label='All teams')
+        each team in allTeams
+          option(value=team.id)= team.name
 
-      each letter in ["A","B"]
-        label(for='team'+letter)= "Team " + letter
-        select(name='team'+letter,id='team'+letter)
-          option(disabled,selected) Select a team
-          optgroup(label='All teams')
-            each team in allTeams
-              option(value=team.id)= team.name
-      input(value='create a new match',type='submit').btn
+  if(isEventAdmin)
+    form(action=formAction,method='post')
+      fieldset
+
+        each letter in ["A","B"]
+          label(for='team'+letter)= "Team " + letter
+          select(name='team'+letter,id='team'+letter)
+            +optionsTeams()
+        input(type='date',required,name='datestart',value=moment().format('YYYY-MM-DD'))
+        input(type='time',required,name='hourstart',value=moment().format('HH:mm'))
+        input(type='text',value='1',name='timezone').timezone
+        input(value='create a new match',type='submit').btn
+
+block append javascripts
+  script.
+    $('.timezone').val(new Date().getTimezoneOffset());
