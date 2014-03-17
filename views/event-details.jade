@@ -1,5 +1,8 @@
 extends layout
 
+block vars
+  - var title = event.name
+
 block content
   h2
     i.fa.fa-trophy
@@ -7,11 +10,25 @@ block content
 
   if matchsList.length
 
-    table
+    table.listMatches
+      - prevDay = 0
       each match in matchsList
+        - currentDay = moment(match.dateStart).format('ddd DD MMM YY')
+        if(prevDay != currentDay)
+          - prevDay = currentDay
+          tr
+            th(colspan=4)= currentDay
+
         tr
-          td= match._teamA.name
-          td= match._teamB.name
+          td.teamA= match._teamA.name
+          td.teamB= match._teamB.name
+          td
+            a(href='/match/'+match._id) details
+          td.hour
+            b= moment(match.dateStart).format('HH:mm')
+            = " "
+            small= "UTC"+moment(match.dateStart).format('Z')
+
 
 
   else

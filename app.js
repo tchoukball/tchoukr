@@ -68,6 +68,7 @@ app.post('*',addLocals);
 var
     routes = require('./routes'),
     adminRoutes = require('./routes/admin'),
+    matchRoutes = require('./routes/match'),
     testcomponent = require('./routes/testcomponent')
 ;
 
@@ -78,6 +79,9 @@ app.get('/', routes.index);
 app.get('/event/:eventid', routes.eventDetail);
 app.post('/event/:eventid', routes.eventDetail);
 app.post('/newevent', routes.eventNew);
+
+// Match
+app.get('/match/:matchid', matchRoutes.matchDetail);
 
 // Tests
 app.get('/component', testcomponent.test);

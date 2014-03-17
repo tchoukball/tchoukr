@@ -47,7 +47,7 @@ exports.eventDetail = function(req,res){
                         return res.redirect(req.originalUrl);
                     }else{
 
-                        var timezone = -1*(parseInt(req.body.timezone)+1-1) ;
+                        var timezone = -1*(parseInt(req.body.timezone)) ;
                         if(timezone >= 0) timezone = '+'+timezone ;
                         var timeString = req.body.datestart + " " + req.body.hourstart + ':00 ' + timezone ;
                         var date = new Date(timeString);
@@ -90,7 +90,7 @@ exports.eventDetail = function(req,res){
                     }
                 }else db.tables.teamNames.find({isAvailable:true}).sort('name').exec(function(err,teams){
 
-                    db.tables.matchs.find({_event:event._id}).populate('_teamA _teamB').exec(function(err,matchs){
+                    db.tables.matchs.find({_event:event._id}).sort('-dateStart').populate('_teamA _teamB').exec(function(err,matchs){
 
                         res.render('event-details',{
                             title:event.name,
