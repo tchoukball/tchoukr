@@ -17,13 +17,21 @@ exports.matchDetail = function(req,res){
         if(! match)
             return res.redirect('/');
 
-        res.render('match-details',{
-            match:match,
-            teamA:match._teamA,
-            teamB:match._teamB,
-            event:match._event,
-            isAdmin:isThisEventAdmin
-        })
+        db.tables.players.find({_team:match._teamA._team}).exec(function(err,playersA){
+        db.tables.players.find({_team:match._teamB._team}).exec(function(err,playersB){
+
+            console.log("Players A",playersA);
+
+            res.render('match-details',{
+                match:match,
+                teamA:match._teamA,
+                teamB:match._teamB,
+                event:match._event,
+                isAdmin:isThisEventAdmin
+            });
+
+        });
+        });
 
     });
 

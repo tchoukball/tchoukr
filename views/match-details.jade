@@ -3,7 +3,6 @@ extends layout
 block vars
   - var title = match._teamA.name + ' - '+match._teamB.name + " · " + match._event.name
   - var matchDate = moment(match.dateStart)
-
 block content
   h2
     i.fa.fa-bullhorn
@@ -25,7 +24,26 @@ block content
       = ' ' + matchDate.format('HH:mm')
       small= matchDate.format('Z')
 
-
   if(isAdmin)
-    div You can administrate this match
+    a.link-admin.btn(href='#') You can administrate the match
 
+    #admin-match
+      #admin-header
+        a.link-admin#admin-close(href='#') Close admin
+      #admin-field Loading field
+
+
+block append javascripts
+  if(isAdmin)
+
+    script.
+      $('.link-admin').on('click',function(){
+        $('#admin-match').toggle();
+        return false;
+      });
+
+      var tchoukAdmin = $('#admin-field').tchoukr().get(0);
+
+      tchoukAdmin.addListener(function(event){
+        console.log("Listened",event);
+      });

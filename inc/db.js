@@ -53,7 +53,16 @@ var schemas = {
         _event : { type: Schema.Types.ObjectId, ref: pf+'events' },
         dateStart : { type: Date, default: Date.now },
         created: {type: Date, default: Date.now}
+    }),
+
+    /* Players */
+    players : new Schema({
+        firstName : String,
+        lastName : String,
+        _teams : [{ type: Schema.Types.ObjectId, ref: pf+'users' }],
+        created: {type: Date, default: Date.now}
     })
+
 };
 
 var tables = {};

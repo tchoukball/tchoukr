@@ -5,6 +5,7 @@
         return this.each(function() {
 
             var view = this;
+            $view = $(this)
 
             var fieldRatio = 5/3 ;
             var zoneRatio = 1/3 ;
@@ -13,15 +14,19 @@
             var $blockComponent = $(this).addClass('tchoukr');
             var $field,$innerField,$zones ;
 
-
             function clickEvent(event){
-                console.log(event.data);
+                var data = event.data;
+                data.x = (event.clientX-view.offsetLeft)/$view.width();
+                data.y = (event.clientY-view.offsetTop)/$view.height();
+
+                noticeListeners(data);
+
                 return false;
             }
 
-            function addListeners(){
-                $zones.on('click',{place:'zone'},clickEvent);
-                $field.on('click',{place:'out'},clickEvent);
+            function addEventsListeners(){
+                $zones.on('click',{place:'zone',isGiven:true},clickEvent);
+                $field.on('click',{place:'out',isGiven:true},clickEvent);
                 $innerField.on('click',{place:'in'},clickEvent);
             }
 
@@ -38,11 +43,21 @@
 
                 $zones = $('.zone',view);
 
-                addListeners();
+                addEventsListeners();
 
                 view.resize();
 
             };
+
+            var listeners = [];
+            this.addListener = function(callback){
+                listeners.push(callback);
+            }
+
+            function noticeListeners(event){
+                for(var i in listeners)
+                    listeners[i](event);
+            }
 
             this.addPoint = function(){
                 console.log("Point");
