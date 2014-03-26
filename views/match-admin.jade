@@ -1,0 +1,79 @@
+extends layout
+
+block vars
+  - var title = 'Admin ' + match._teamA.name + ' - '+match._teamB.name + " · " + match._event.name
+  - var matchDate = moment(match.dateStart)
+block content
+
+  h2
+    i.fa.fa-edit
+    = ' '
+    = match._teamA.name
+    = ' - '
+    = match._teamB.name
+
+  a.btn(href='/match/'+match._id) Back to the match
+
+
+  mixin showPlayers(players,team)
+
+    form(action=path,method=post)
+      table
+        tr
+          th(colspan=3)= team.name
+        each player in players
+          tr
+            td= player.firstName
+            td= player.lastName
+            td
+              input(type='text',placeholder='#')
+
+        tr
+          td(colspan=2)
+          td
+            input(type='submit',value='save numbers')
+
+    form(action=path,method='post')
+      fieldset#newplayer
+        input(type='hidden',name='team',value=team._team)
+        input(type='text',name='firstname',placeholder='first name')
+        input(type='text',name='lastname',placeholder='last name')
+        input.btn(type='submit',name='addplayer',value='add player to this team')
+
+
+
+
+  .players-list#players-list-A
+    +showPlayers(playersA,teamA)
+
+  .players-list#players-list-B
+    +showPlayers(playersB,teamB)
+
+  #admin-field Loading field
+
+
+block append javascripts
+
+
+  if(isAdmin)
+
+    script.
+
+      $(function(){
+
+        $adminMatch = $('#admin-match');
+
+        $('.link-admin').on('click',function(){
+          $adminMatch.toggle();
+          return false;
+        });
+
+        var tchoukAdmin = $('#admin-field').tchoukr().get(0);
+
+        $adminMatch.hide();
+
+        tchoukAdmin.addListener(function(event){
+          console.log("Listened",event);
+        });
+
+      })

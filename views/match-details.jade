@@ -4,12 +4,14 @@ block vars
   - var title = match._teamA.name + ' - '+match._teamB.name + " · " + match._event.name
   - var matchDate = moment(match.dateStart)
 block content
-  h2
+
+  //h2
     i.fa.fa-bullhorn
     = ' '
     = match._teamA.name
     = ' - '
     = match._teamB.name
+
 
   ul.match-infos
     li
@@ -24,26 +26,37 @@ block content
       = ' ' + matchDate.format('HH:mm')
       small= matchDate.format('Z')
 
+
+  mixin showPlayers(players,team)
+    h3= team.name
+
+    .team-content
+      if(players && players.length)
+        ul
+          each player in players
+            li= player.lastName.toUpperCase() + ' ' + player.firstName
+      else
+        .no-player Unknown composition
+
+  #match-board
+
+    .players-list#players-list-A
+      +showPlayers(playersA,teamA)
+
+    .players-list#players-list-B
+      +showPlayers(playersB,teamB)
+
+    #score-table
+      #score-display
+        #scoreA --
+        #scoreSeparator :
+        #scoreB --
+
+
   if(isAdmin)
-    a.link-admin.btn(href='#') You can administrate the match
-
-    #admin-match
-      #admin-header
-        a.link-admin#admin-close(href='#') Close admin
-      #admin-field Loading field
-
+    a.btn(href='./'+match._id+'/admin') You can administrate the match
 
 block append javascripts
-  if(isAdmin)
-
-    script.
-      $('.link-admin').on('click',function(){
-        $('#admin-match').toggle();
-        return false;
-      });
-
-      var tchoukAdmin = $('#admin-field').tchoukr().get(0);
-
-      tchoukAdmin.addListener(function(event){
-        console.log("Listened",event);
-      });
+  script.
+    $('#players-list-A h3').on('click',function(){$('#players-list-A .team-content').toggleClass('players-showOnMobile')});
+    $('#players-list-B h3').on('click',function(){$('#players-list-B .team-content').toggleClass('players-showOnMobile')});

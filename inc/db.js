@@ -57,9 +57,9 @@ var schemas = {
 
     /* Players */
     players : new Schema({
-        firstName : String,
-        lastName : String,
-        _teams : [{ type: Schema.Types.ObjectId, ref: pf+'users' }],
+        firstName : {type:String,match: /^.{2,20}$/i},
+        lastName : {type:String,match: /^.{2,20}$/i},
+        _teams : [{ type: Schema.Types.ObjectId, ref: pf+'teams' }],
         created: {type: Date, default: Date.now}
     })
 

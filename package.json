@@ -14,6 +14,7 @@
     "mongoose":"*",
     "session-mongoose":"*",
     "passport":"*",
-    "passport-facebook":"*"
+    "passport-facebook":"*",
+    "socket.io": "*"
   }
 }

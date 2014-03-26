@@ -11,7 +11,8 @@ var
     ymlConfig = require('yaml-config')
     app = express(),
     server = http.createServer(app),
-    SessionStore = require("session-mongoose")(express)
+    SessionStore = require("session-mongoose")(express),
+    io = require('socket.io').listen(server)
 ;
 
 
@@ -58,6 +59,7 @@ require('./inc/login').app(app,passport);
 function addLocals(req,res,next){
     res.locals.user = req.user;
     res.locals.appName = conf.app.title;
+    res.locals.path = req.path;
     next();
 }
 
@@ -82,6 +84,8 @@ app.post('/newevent', routes.eventNew);
 
 // Match
 app.get('/match/:matchid', matchRoutes.matchDetail);
+app.get('/match/:matchid/admin', matchRoutes.matchAdmin);
+app.post('/match/:matchid/admin', matchRoutes.matchAdmin);
 
 // Tests
 app.get('/component', testcomponent.test);
@@ -92,6 +96,8 @@ app.post('/admin/clubs', adminRoutes.clubs);
 
 
 app.use(app.router);
+
+require('./inc/sockets.js')(app,io);
 
 // development only
 if ('development' == app.get('env')) {

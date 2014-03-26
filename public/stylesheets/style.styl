@@ -6,6 +6,7 @@ $responsiveDesktop = "(min-width:"+($mobileLimit+1)+")"
 $mainColor = #00B7FF
 $secondColor = #ffcc00
 $titleFont = 'Varela Round', sans-serif
+$scoreFont = 'Orbitron', sans-serif
 
 
 *
@@ -214,6 +215,7 @@ table
 
 .match-infos
 	display block
+	margin 15px 0
 
 	li
 		display inline-block
@@ -221,14 +223,128 @@ table
 		text-align center
 
 
-#admin-match
-	background #333
-	position absolute
-	top 0
-	left 0
-	width 100%
-	text-align center
+#match-board
+	border-radius 10px
+	background #ccc
+	height 300px
+	overflow hidden
 
-	#admin-field
+	@media $responsiveMobile
+		height auto
+		border 2px solid #ccc
+
+
+	.players-list
+	#score-table
 		display inline-block
-		width 66%
+		height 100%
+		overflow hidden
+
+	.players-list
+		background #eee
+		border-radius 10px
+		width 30%
+		box-shadow 0 0 10px rgba(0,0,0,0.4)
+
+		@media $responsiveMobile
+			width 100%
+			box-shadow none
+			border-radius 0
+
+		h3
+			padding 10px
+			font-size 1.5em
+			font-family $titleFont
+			border-bottom 1px dotted #fff
+			height 2.2em
+			line-height 1.1em
+			text-align center
+
+			@media $responsiveMobile
+				height auto
+
+		ul
+
+			li
+				display block
+				font-size 0.9em
+				font-style italic
+				list-style-type none
+				padding 1px 5px
+				border-bottom 1px solid #fff
+
+			li:nth-child(odd)
+				background-color #fafafa
+
+		@media $responsiveMobile
+
+			h3
+				cursor pointer
+
+			.team-content
+				display none
+
+			.players-showOnMobile
+				display block
+
+		.no-player
+			color rgba(0,0,0,0.3)
+			text-align center
+			padding 5px
+
+	#players-list-A
+		float left
+
+		@media $responsiveMobile
+			h3
+				text-align left
+
+	#players-list-B
+		float right
+
+		@media $responsiveMobile
+			h3
+				text-align right
+
+#score-table
+	width 40%
+
+	@media $responsiveMobile
+		width 100%
+
+	#score-display
+		font-family $scoreFont
+		color $mainColor
+		text-align center
+		font-size 4em
+		line-height 1em
+		text-shadow 2px 2px 0 rgba(0,0,0,0.3)
+		margin 10px
+		background #666
+		border 3px outset $mainColor
+		height 0.85em
+		padding 10px
+		border-radius 10px
+
+		background: rgb(125,126,125);
+		background: -moz-linear-gradient(top,  rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(125,126,125,1)), color-stop(100%,rgba(14,14,14,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* W3C */
+
+
+		div
+			display inline-block
+			width 45%
+
+		#scoreSeparator
+			width 10%
+
+		#scoreA
+			text-align right
+
+		#scoreB
+			text-align left
+
