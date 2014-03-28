@@ -8,6 +8,11 @@ mongoose.connect('mongodb://localhost/tchoukr');
 
 var pf = 'data_';
 
+var schemaTeamComposition = new Schema({
+    shirtNumber:{ type: Number, min:0,max:99},
+    _player:{ type: Schema.Types.ObjectId, ref: pf+'players' }
+});
+
 var schemas = {
 
     /* Connexion */
@@ -51,6 +56,8 @@ var schemas = {
         _teamA : { type: Schema.Types.ObjectId, ref: pf+'teamNames' },
         _teamB : { type: Schema.Types.ObjectId, ref: pf+'teamNames' },
         _event : { type: Schema.Types.ObjectId, ref: pf+'events' },
+        compositionA : [schemaTeamComposition],
+        compositionB : [schemaTeamComposition],
         dateStart : { type: Date, default: Date.now },
         created: {type: Date, default: Date.now}
     }),

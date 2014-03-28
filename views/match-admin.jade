@@ -15,9 +15,21 @@ block content
   a.btn(href='/match/'+match._id) Back to the match
 
 
-  mixin showPlayers(players,team)
 
-    form(action=path,method=post)
+
+  mixin showPlayers(players,team,compo)
+
+    - getShirtNumber = function(player){
+    -   for(var i in compo){
+    -     if(compo[i].shirtNumber && compo[i]._player._id.equals(player._id)){
+    -       return compo[i].shirtNumber;
+    -     }
+    -   }
+    -   return;
+    - }
+
+
+    form(action=path,method='post')
       table
         tr
           th(colspan=3)= team.name
@@ -26,12 +38,13 @@ block content
             td= player.firstName
             td= player.lastName
             td
-              input(type='text',placeholder='#')
+              = "Shirt: "
+              input(type='text',placeholder='Not playing',name='player'+player._id,value=getShirtNumber(player))
 
         tr
           td(colspan=2)
           td
-            input(type='submit',value='save numbers')
+            input(type='submit',value='save numbers',name='editTeam'+team._id)
 
     form(action=path,method='post')
       fieldset#newplayer
@@ -44,36 +57,13 @@ block content
 
 
   .players-list#players-list-A
-    +showPlayers(playersA,teamA)
+    +showPlayers(playersA,teamA,match.compositionA)
 
   .players-list#players-list-B
-    +showPlayers(playersB,teamB)
+    +showPlayers(playersB,teamB,match.compositionB)
 
   #admin-field Loading field
 
 
 block append javascripts
-
-
-  if(isAdmin)
-
-    script.
-
-      $(function(){
-
-        $adminMatch = $('#admin-match');
-
-        $('.link-admin').on('click',function(){
-          $adminMatch.toggle();
-          return false;
-        });
-
-        var tchoukAdmin = $('#admin-field').tchoukr().get(0);
-
-        $adminMatch.hide();
-
-        tchoukAdmin.addListener(function(event){
-          console.log("Listened",event);
-        });
-
-      })
+  script(src='/javascripts/admin.js')

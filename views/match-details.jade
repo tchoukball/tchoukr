@@ -27,24 +27,27 @@ block content
       small= matchDate.format('Z')
 
 
-  mixin showPlayers(players,team)
+  mixin showPlayers(compo,team)
     h3= team.name
 
     .team-content
-      if(players && players.length)
+      if(compo && compo.length)
         ul
-          each player in players
-            li= player.lastName.toUpperCase() + ' ' + player.firstName
+          each player in compo
+            - console.log(player)
+            li
+              span.shirtNumber= player.shirtNumber
+              span.playerName= player._player.lastName.toUpperCase() + ' ' + player._player.firstName
       else
         .no-player Unknown composition
 
   #match-board
 
     .players-list#players-list-A
-      +showPlayers(playersA,teamA)
+      +showPlayers(compoA,teamA)
 
     .players-list#players-list-B
-      +showPlayers(playersB,teamB)
+      +showPlayers(compoB,teamB)
 
     #score-table
       #score-display
