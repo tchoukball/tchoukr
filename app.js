@@ -5,16 +5,14 @@
 
 var
     express = require('express'),
-    http = require('http'),
     path = require('path'),
     passport = require('passport'),
     ymlConfig = require('yaml-config')
     app = express(),
-    server = http.createServer(app),
-    SessionStore = require("session-mongoose")(express),
-    io = require('socket.io').listen(server)
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server),
+    SessionStore = require("session-mongoose")(express)
 ;
-
 
 
 var conf = ymlConfig.readConfig('./config.yml',app.get('env'));
@@ -104,6 +102,6 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log(conf.app.title+' server listening on port ' + app.get('port'));
 });

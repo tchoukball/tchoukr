@@ -68,6 +68,17 @@ var schemas = {
         lastName : {type:String,match: /^.{2,20}$/i},
         _teams : [{ type: Schema.Types.ObjectId, ref: pf+'teams' }],
         created: {type: Date, default: Date.now}
+    }),
+
+    /* Players */
+    actions : new Schema({
+        value : {type:String,match: /^.{1,20}$/i},
+        isGiven: Boolean,
+        isPoint: Boolean,
+        _team : { type: Schema.Types.ObjectId, ref: pf+'teams' },
+        _players : [{ type: Schema.Types.ObjectId, ref: pf+'players' }],
+        _match : { type: Schema.Types.ObjectId, ref: pf+'matchs' },
+        created: {type: Date, default: Date.now}
     })
 
 };

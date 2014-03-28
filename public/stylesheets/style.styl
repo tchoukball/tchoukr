@@ -19,6 +19,10 @@ body
 a
 	color $mainColor
 
+
+.end
+	clear both
+
 #header
 	background: rgb(252,234,187); /* Old browsers */
 	background: -moz-linear-gradient(top,  rgba(252,234,187,1) 0%, rgba(252,205,77,1) 50%, rgba(248,181,0,1) 51%, rgba(251,223,147,1) 100%); /* FF3.6+ */
@@ -79,6 +83,16 @@ a
 		max-width $maxBodyWidth
 		margin auto
 		padding 0
+
+.menu
+	background #333
+	margin-bottom 10px
+
+	li
+		display inline-block
+		padding 5px 5px
+		margin 0 10px
+		font-weight bold
 
 
 
@@ -319,6 +333,7 @@ table
 		@media $responsiveMobile
 			h3
 				text-align right
+
 
 #score-table
 	width 40%

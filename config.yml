@@ -9,7 +9,7 @@ default:
     facebook:
       appid: 154545311302386
       appsecret: 863c864c33fd64a86bdbb8573415149c
-      callbackurl: http://localhost:3000/auth/facebook/callback
+      callbackurl: http://192.168.43.76:3000/auth/facebook/callback
 
 # Production environment
 dev:

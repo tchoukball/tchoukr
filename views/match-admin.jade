@@ -12,11 +12,6 @@ block content
     = ' - '
     = match._teamB.name
 
-  a.btn(href='/match/'+match._id) Back to the match
-
-
-
-
   mixin showPlayers(players,team,compo)
 
     - getShirtNumber = function(player){
@@ -39,7 +34,7 @@ block content
             td= player.lastName
             td
               = "Shirt: "
-              input(type='text',placeholder='Not playing',name='player'+player._id,value=getShirtNumber(player))
+              input(type='number',placeholder='Not playing',name='player'+player._id,value=getShirtNumber(player))
 
         tr
           td(colspan=2)
@@ -54,16 +49,62 @@ block content
         input.btn(type='submit',name='addplayer',value='add player to this team')
 
 
+  mixin displayCompo(compo,team)
+    each player in compo
+      a.playerPlaying(href='#','data-id'=player._player._id,'data-team'=team._id)
+        span.shirtNumber= player.shirtNumber
+        = player._player.firstName+' '+player._player.lastName
 
 
-  .players-list#players-list-A
-    +showPlayers(playersA,teamA,match.compositionA)
+  ul.menu
+    li
+      a#link-composition(href='#') Composition
+    li
+      a#link-live(href='#') Live score
+    li
+      a(href='/match/'+match._id) Back to the match
 
-  .players-list#players-list-B
-    +showPlayers(playersB,teamB,match.compositionB)
 
-  #admin-field Loading field
+  #admin-tab-live
+
+    #admin-field Loading field
+
+    #admin-players
+      table
+        tr
+          th #
+          th Participation as a...
+          th Selected
+        tbody#playersSelected
+        tr
+          td(colspan=3)
+            a#submitAction(href='#') Submit action
+
+      #compoA
+        h3= teamA.name
+        +displayCompo(match.compositionA,match._teamA)
+      #compoB
+        h3= teamB.name
+        +displayCompo(match.compositionB,match._teamB)
+
+
+  #admin-tab-compo
+
+    .players-list#players-list-A
+      +showPlayers(playersA,teamA,match.compositionA)
+
+    .players-list#players-list-B
+      +showPlayers(playersB,teamB,match.compositionB)
+
+
+  .end
+
+
+block append styles
+  link(rel='stylesheet', href='/stylesheets/admin.css', type='text/css')
 
 
 block append javascripts
-  script(src='/javascripts/admin.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/javascripts/match.admin.js')
+  script= 'adminMatch(\''+match._id+'\')'
