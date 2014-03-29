@@ -51,7 +51,8 @@ block content
 
   mixin displayCompo(compo,team)
     each player in compo
-      a.playerPlaying(href='#','data-id'=player._player._id,'data-team'=team._id)
+      - console.log(player._player._id)
+      a.playerPlaying(href='#',data-id=""+player._player._id,data-team=""+team._id)
         span.shirtNumber= player.shirtNumber
         = player._player.firstName+' '+player._player.lastName
 
@@ -74,7 +75,7 @@ block content
         tr
           th #
           th Participation as a...
-          th Selected
+          th Player
         tbody#playersSelected
         tr
           td(colspan=3)

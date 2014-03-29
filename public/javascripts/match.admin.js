@@ -5,14 +5,14 @@ function adminMatch(matchId){
     var actionsTypes = {
         'in':[
             {role:'Shooter',required:true},
-            {role:'Defender 1',required:false},
+            {role:'Defender - if ball catched',required:false},
             {role:'Defender 2',required:false},
         ],
         'out':[
-            {role:'Schooter',required:true},
+            {role:'Shooter',required:true},
         ],
         'zone':[
-            {role:'Schooter',required:true},
+            {role:'Shooter',required:true},
         ]
     }
 
@@ -23,15 +23,14 @@ function adminMatch(matchId){
 
         initAdmin();
 
-        socket.on('news', function (data) {
-            console.log(data);
-            socket.emit('my other event', { my: 'data' });
-        });
-
         $tchoukr.addListener(function(action){
             treatAction(action);
         });
 
+    });
+
+    socket.on('newaction',function(data){
+        console.log("New Action",data);
     });
 
     function initAdmin(){
@@ -64,7 +63,7 @@ function adminMatch(matchId){
     function startNewAction(){
         $field.show();
         $players.hide();
-        console.log("New action");
+        $tchoukr.resize();
     }
 
 
@@ -74,12 +73,11 @@ function adminMatch(matchId){
 
     $('.playerPlaying').on('click',function(e){
         var playerDom = $(this) ;
-        console.log(currentPlayerId);
-        console.log(domPlayers[currentPlayerId]);
-        domPlayers[currentPlayerId].html(playerDom.html());
-
+        domPlayers[currentPlayerId].html(playerDom.html())
+            .data('team',playerDom.data('team'))
+            .data('id',playerDom.data('id'))
+        ;
         currentPlayerId++;
-
         if(currentPlayerId >= currentAction.schema.length)
             submitAction(currentAction);
 
@@ -96,6 +94,8 @@ function adminMatch(matchId){
 
         currentPlayerId = 0 ;
         currentAction = action ;
+        domPlayers = [];
+
         if(actionsTypes[currentAction.place]){
             currentAction.schema = actionsTypes[currentAction.place];
             getPlayers(currentAction);
@@ -109,8 +109,6 @@ function adminMatch(matchId){
         $players.show();
         $field.hide();
 
-        domPlayers = [];
-
         $tableActions = $('#playersSelected');
         $tableActions.html("");
         for(var schI in currentAction.schema){
@@ -119,7 +117,7 @@ function adminMatch(matchId){
             $line.append($('<td>').text(parseInt(schI)+1));
             $line.append($('<td>').text(pl.required?pl.role:'('+pl.role+'?)'));
             var domSelected = $('<td>');
-            domSelected.html(pl.required?'required':'if there is one');
+            domSelected.html(pl.required?$('<b>').text('required'):'');
             $line.append(domSelected);
             domPlayers.push(domSelected);
             $tableActions.append($line);
@@ -129,7 +127,29 @@ function adminMatch(matchId){
 
     function submitAction(){
 
+        console.log("SUBMIT");
         console.log(currentAction);
+        currentAction.players = [];
+        var team ;
+        for(var i in domPlayers){
+            var dom = domPlayers[i];
+            if(dom.data('id')){
+                if(i == 0)
+                    currentAction.team  = dom.data('team');
+
+                currentAction.players.push(dom.data('id'));
+            }
+
+        }
+
+        for(var i in currentAction.schema){
+            if(currentAction.schema[i].required){
+                if(! currentAction.players[i]){
+                    alert(currentAction.schema[i].role + " is required.");
+                    return;
+                }
+            }
+        }
 
         socket.emit("action",currentAction);
         startNewAction();
