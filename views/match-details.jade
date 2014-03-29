@@ -28,7 +28,7 @@ block content
 
 
   mixin showPlayers(compo,team)
-    h3= team.name
+    h3(data-id=""+team._id)= team.name
 
     .team-content
       if(compo && compo.length)
@@ -60,6 +60,6 @@ block content
     a.btn(href='./'+match._id+'/admin') You can administrate the match
 
 block append javascripts
-  script.
-    $('#players-list-A h3').on('click',function(){$('#players-list-A .team-content').toggleClass('players-showOnMobile')});
-    $('#players-list-B h3').on('click',function(){$('#players-list-B .team-content').toggleClass('players-showOnMobile')});
+  script(src='/socket.io/socket.io.js')
+  script(src='/javascripts/match.live.js')
+  script= 'liveMatch(\''+match._id+'\')'

@@ -37,18 +37,30 @@ module.exports = function(app,io){
             if(action.value == 'in' && action._players.length == 1)
                 action.isPoint = true ;
 
-
-            console.log("For",matchId,data);
-
             action.save(function(err){
                 if(err) return console.warn(err,data);
-                io.sockets.in('match'+matchId).emit('newaction',data);
+                io.sockets.in('match'+matchId).emit('newaction',action);
             })
 
 
         });
 
+        socket.on('pleaseSendMeData',function(){
+           getMatchData(matchId,function(data){
+               socket.emit('initMatchData',data);
+           });
+        });
+
     });
 
 
+
+    function getMatchData(matchId,callback){
+        db.tables.actions.find({_match:matchId}).exec(function(err,matchData){
+            if(err) console.warn('getMatchData',err);
+            callback(matchData);
+        })
+    }
+
 }
+
