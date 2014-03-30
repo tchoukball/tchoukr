@@ -1,11 +1,17 @@
 $('#players-list-A h3').on('click',function(){$('#players-list-A .team-content').toggleClass('players-showOnMobile')});
 $('#players-list-B h3').on('click',function(){$('#players-list-B .team-content').toggleClass('players-showOnMobile')});
 
-var actions = [] ;
+var
+    $field = $('#match-field'),
+    $tchoukr = $field.tchoukr().get(0),
+    actions = [],
+    teamsId = {A:null,B:null},
+    indexTeams = {},
+    playersDOM = {}
 
-var teamsId = {A:null,B:null};
-var indexTeams = {};
-
+function getDomFromLetter(letter){
+    return $('#players-list-'+letter+' li');
+}
 
 function liveMatch(matchId){
 
@@ -13,14 +19,12 @@ function liveMatch(matchId){
         var id = $('#players-list-'+tI+' h3').data('id') ;
         teamsId[tI] = id ;
         indexTeams[id] = tI;
+        playersDOM[id] = getDomFromLetter(tI);
     }
 
     var socket = io.connect('/');
     socket.emit('registerMatch',{matchId:matchId});
     socket.on('ready',function(){
-
-        $field = $('#admin-field');
-        $tchoukr = $field.tchoukr().get(0)
 
         socket.emit('pleaseSendMeData');
 
@@ -50,22 +54,58 @@ function oppositeTeam(letter){
     return 'A';
 }
 
+var scoreTotal ;
 function displayStats(){
+
     sortActions();
 
-    var scoreTotal = {A:0,B:0};
+    scoreTotal = {A:0,B:0};
+    $tchoukr.removeMarkers();
+
     for(var i in actions){
-        var action = actions[i];
-        if(indexTeams[action._team]){
-            var letterTeam = indexTeams[action._team];
-            if(action.isPoint)
-                scoreTotal[letterTeam]++ ;
-            if(action.isGiven)
-                scoreTotal[oppositeTeam(letterTeam)]++ ;
-        }
+        treatAction(actions[i]);
     }
 
-    displayScore(scoreTotal)
+    displayScore(scoreTotal);
+}
+
+function treatAction(action){
+
+    if(! indexTeams[action._team]) return ;
+
+    var typeSign = 'defense';
+    var letterTeam = indexTeams[action._team];
+
+    if(action.isPoint){
+        scoreTotal[letterTeam]++ ;
+        typeSign = 'point';
+    }
+
+    if(action.isGiven){
+        scoreTotal[oppositeTeam(letterTeam)]++ ;
+        typeSign = 'given';
+    }
+
+    var fontAwesomeSign ;
+    switch(typeSign){
+        case'given':
+            fontAwesomeSign = 'minus-circle';
+            break;
+        case'point':
+            fontAwesomeSign = 'bullseye';
+            break;
+        case'defense':
+            fontAwesomeSign = 'thumbs-down';
+            break;
+        default:
+            fontAwesomeSign = 'circle';
+    }
+    $tchoukr.addMarker(
+        action.position,
+        $('<div>').addClass('marker-team-'+letterTeam+' marker-type-'+typeSign).html(
+            $('<i>').addClass('fa fa-'+fontAwesomeSign)
+        )
+    );
 }
 
 function displayScore(total){

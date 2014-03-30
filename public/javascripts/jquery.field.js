@@ -16,8 +16,9 @@
 
             function clickEvent(event){
                 var data = event.data;
-                data.x = (event.clientX-view.offsetLeft)/$view.width();
-                data.y = (event.clientY-view.offsetTop)/$view.height();
+                console.log(event);
+                data.x = (event.pageX-view.offsetLeft)/$view.width();
+                data.y = (event.pageY-view.offsetTop)/$view.height();
 
                 noticeListeners(data);
 
@@ -59,8 +60,17 @@
                     listeners[i](event);
             }
 
-            this.addPoint = function(){
-                console.log("Point");
+            function percent(perOne){
+                return (perOne*100)+'%';
+            }
+
+            this.addMarker = function(position,dom){
+                console.log(position);
+                $field.append($(dom).addClass('marker').css({top:percent(position.y),left:percent(position.x)}));
+            }
+
+            this.removeMarkers = function(){
+                $field.find('marker').remove();
             }
 
             this.resize = function(){

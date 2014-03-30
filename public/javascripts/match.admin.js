@@ -35,7 +35,7 @@ function adminMatch(matchId){
 
     function initAdmin(){
         $field = $('#admin-field');
-        $tchoukr = $field.tchoukr().get(0)
+        $tchoukr = $field.tchoukr().get(0);
         $players = $('#admin-players');
         setMenuAdmin()
         startNewAction();
