@@ -34,8 +34,7 @@ block content
       if(compo && compo.length)
         ul
           each player in compo
-            - console.log(player)
-            li
+            li(data-id=""+player._player._id)
               span.shirtNumber= player.shirtNumber
               span.playerName= player._player.lastName.toUpperCase() + ' ' + player._player.firstName
       else
@@ -56,6 +55,13 @@ block content
         #scoreB --
 
   #match-field.match-field
+
+  table.player-actions
+    tr
+      th Min.
+      th(colspan=3) Score
+      th(colspan=3) Details
+    tbody#match-actions
 
   if(isAdmin)
     a.btn(href='./'+match._id+'/admin') You can administrate the match

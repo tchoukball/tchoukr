@@ -269,7 +269,7 @@ table
 			padding 10px
 			font-size 1.5em
 			font-family $titleFont
-			border-bottom 1px dotted #fff
+			border-bottom 3px solid #fff
 			height 2.2em
 			line-height 1.1em
 			text-align center
@@ -315,6 +315,8 @@ table
 
 	#players-list-A
 		float left
+		h3
+			border-bottom-color #800
 
 		ul
 			li
@@ -329,6 +331,9 @@ table
 
 	#players-list-B
 		float right
+
+		h3
+			border-bottom-color #008
 
 		@media $responsiveMobile
 			h3
@@ -380,8 +385,8 @@ table
 
 .match-field
 	.marker
-		margin-left -0.5em
-		margin-top -0.5em
+		margin-left -0.8em
+		margin-top -0.3em
 
 	.marker-team-A
 		color #800
@@ -392,5 +397,28 @@ table
 		opacity 0.3
 
 #match-field
-	font-size 1.5em
+	font-size 1.2em
+	margin 10px 0
+	border-radius 10px
+	overflow hidden
 
+.player-actions
+	.td-score
+		width 25px
+		text-align center
+		font-size 0.9em
+
+	.td-score-A
+	.td-score-B
+		color #fff
+		border-radius 4px
+		font-weight bold
+
+	.td-score-A
+		background #800
+	.td-score-B
+		background #008
+
+	.td-score-losing
+		font-size 0.7em
+		opacity 0.6

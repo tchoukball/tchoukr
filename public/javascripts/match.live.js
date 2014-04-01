@@ -7,10 +7,16 @@ var
     actions = [],
     teamsId = {A:null,B:null},
     indexTeams = {},
-    playersDOM = {}
+    playersDOM = {},
+    $actionList = $('#match-actions');
+;
 
 function getDomFromLetter(letter){
-    return $('#players-list-'+letter+' li');
+    var p = {};
+    $('#players-list-'+letter+' li').each(function(a,b){
+       p[$(b).data('id')] = b;
+    });
+    return p ;
 }
 
 function liveMatch(matchId){
@@ -45,7 +51,7 @@ function liveMatch(matchId){
 
 function sortActions(){
     actions = actions.sort(function(a,b){
-         return (a.created > b.created) ;
+        return new Date(a.created)-new Date(b.created);
     });
 }
 
@@ -61,6 +67,7 @@ function displayStats(){
 
     scoreTotal = {A:0,B:0};
     $tchoukr.removeMarkers();
+    $actionList.html("");
 
     for(var i in actions){
         treatAction(actions[i]);
@@ -74,15 +81,17 @@ function treatAction(action){
     if(! indexTeams[action._team]) return ;
 
     var typeSign = 'defense';
-    var letterTeam = indexTeams[action._team];
+    action.letterTeam = indexTeams[action._team];
+
+    var shooter = action._players.shift() ;
 
     if(action.isPoint){
-        scoreTotal[letterTeam]++ ;
+        scoreTotal[action.letterTeam]++ ;
         typeSign = 'point';
     }
 
     if(action.isGiven){
-        scoreTotal[oppositeTeam(letterTeam)]++ ;
+        scoreTotal[oppositeTeam(action.letterTeam)]++ ;
         typeSign = 'given';
     }
 
@@ -102,10 +111,84 @@ function treatAction(action){
     }
     $tchoukr.addMarker(
         action.position,
-        $('<div>').addClass('marker-team-'+letterTeam+' marker-type-'+typeSign).html(
-            $('<i>').addClass('fa fa-'+fontAwesomeSign)
+        $('<div>').addClass('marker-team-'+action.letterTeam+' marker-type-'+typeSign).html(
+            $('<i>').addClass('fa fa-'+fontAwesomeSign).attr('title',action.created)
         )
     );
+
+    var player = getPlayerInformations(action._team,shooter);
+
+    var $actionLine = $('<tr>');
+    $actionList.prepend($actionLine);
+
+    var dateBegin = new Date(actions[0].created);
+    var dateAction = new Date(action.created);
+    action.minute = Math.floor((dateAction-dateBegin)/1000/60);
+    action.scoreDiff = Math.abs(scoreTotal.A-scoreTotal.B);
+    action.score = scoreTotal;
+
+    $actionLine.append($('<td>').text(action.minute+"'"));
+    for(var i in scoreTotal){
+        var isLosing = scoreTotal[i] < scoreTotal[oppositeTeam(i)];
+        $actionLine.append($('<td>').addClass('td-score').addClass('td-score-'+i).toggleClass('td-score-losing',isLosing).html(scoreTotal[i]));
+    }
+    $actionLine.append($('<td>').addClass('td-score').html(action.scoreDiff));
+    $actionLine.append($('<td>').html($('<i>').addClass('fa fa-'+fontAwesomeSign)));
+    $actionLine.append($('<td>').html(player.name));
+    $actionLine.append($('<td>').html(getActionComments(action)));
+}
+
+function getActionComments(action){
+    var comments = [];
+
+    // During a point
+    if(action.isGiven || action.isPoint){
+
+        if(action.score.A == action.score.B)
+            comments.push('equalisation');
+
+        if(action.scoreDiff == 2)
+            comments.push('+2')
+    }else{
+        comments.push('defended by '+getPlayersList(teamsId[oppositeTeam(action.letterTeam)],action._players));
+    }
+
+    if(action.value == 'out')
+        comments.push('out');
+
+    if(action.isGiven)
+        comments.push('given point');
+
+    return comments.join(', ');
+}
+
+function getPlayersList(team,_players){
+    var p = [];
+    for(var i in _players){
+        p.push(getPlayerInformations(team,_players[i]).name);
+    }
+    return p.join(' and ');
+}
+
+function getPlayerDom(teamId,id){
+    if(! playersDOM[teamId]){
+        console.warn("Unknow team",teamId,playersDOM);
+        return ;
+    }else if(! playersDOM[teamId][id]){
+        console.warn("Unknow player",id,playersDOM);
+        return ;
+    }
+    return playersDOM[teamId][id];
+}
+
+function getPlayerInformations(teamId,id){
+    var pDOM = getPlayerDom(teamId,id);
+    if(! pDOM) return {};
+    var p = $(pDOM);
+    return {
+        name:p.find('.playerName').html(),
+        shirtNumber:p.find('.shirtNumber').html()
+    }
 }
 
 function displayScore(total){

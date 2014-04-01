@@ -16,7 +16,6 @@
 
             function clickEvent(event){
                 var data = event.data;
-                console.log(event);
                 data.x = (event.pageX-view.offsetLeft)/$view.width();
                 data.y = (event.pageY-view.offsetTop)/$view.height();
 
@@ -65,7 +64,6 @@
             }
 
             this.addMarker = function(position,dom){
-                console.log(position);
                 $field.append($(dom).addClass('marker').css({top:percent(position.y),left:percent(position.x)}));
             }
 
