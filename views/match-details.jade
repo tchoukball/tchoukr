@@ -56,12 +56,29 @@ block content
 
   #match-field.match-field
 
-  table.player-actions
-    tr
-      th Min.
-      th(colspan=3) Score
-      th(colspan=3) Details
-    tbody#match-actions
+  #actions-list.box
+    .box-header Actions details
+    .box-content
+      #table-actions
+        table.player-actions
+          tr
+            th Min.
+            th(colspan=3) Score
+            th(colspan=3) Details
+          tbody#match-actions
+
+  #players-stats-list.box
+    .box-header Individual stats
+    .box-content
+      #table-players-stats
+        table.player-actions
+          tr
+            th Name
+            th Poi
+            th Giv
+            th Def
+            th TR
+          tbody#players-stats
 
   if(isAdmin)
     a.btn(href='./'+match._id+'/admin') You can administrate the match

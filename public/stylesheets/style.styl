@@ -185,6 +185,7 @@ fieldset
 	padding 10px
 	border 3px solid $mainColor
 
+
 table
 	width 100%
 	border-collapse collapse
@@ -200,7 +201,6 @@ table
 		a
 			display block
 			text-align center
-
 
 	th
 		background $mainColor
@@ -226,6 +226,27 @@ table
 		text-align center
 
 
+.box
+
+	background #eee
+	border-radius 5px
+	overflow hidden
+	border 2px solid $mainColor
+
+	.box-header
+		background $mainColor
+		color white
+		text-shadow -1px -1px 1px rgba(0,0,0,0.4)
+		font-weight bold
+		padding 2px 5px
+
+	.box-content
+
+
+		table
+			margin 0
+			th
+				background #bbb
 
 .match-infos
 	display block
@@ -397,28 +418,60 @@ table
 		opacity 0.3
 
 #match-field
-	font-size 1.2em
+	font-size 1.4em
 	margin 10px 0
 	border-radius 10px
 	overflow hidden
 
-.player-actions
-	.td-score
-		width 25px
-		text-align center
-		font-size 0.9em
+	@media $responsiveMobile
+		width 100%
 
-	.td-score-A
-	.td-score-B
-		color #fff
-		border-radius 4px
-		font-weight bold
+#actions-list
+	display inline-block
+	width 60%
 
-	.td-score-A
-		background #800
-	.td-score-B
-		background #008
+	@media $responsiveMobile
+		width auto
 
-	.td-score-losing
-		font-size 0.7em
-		opacity 0.6
+	#table-actions
+
+		height 300px
+		overflow auto
+
+		.player-actions
+			.td-score
+				width 25px
+				text-align center
+				font-size 0.9em
+
+			.td-score-A
+			.td-score-B
+				color #fff
+				border-radius 4px
+				font-weight bold
+
+			.td-score-A
+				background #800
+			.td-score-B
+				background #008
+
+			.td-score-losing
+				font-size 0.7em
+				opacity 0.6
+
+#players-stats-list
+	display inline-block
+	width 38%
+	float right
+
+	table
+		min-height 100%
+
+	#table-players-stats
+		height 300px
+		overflow auto
+
+	@media $responsiveMobile
+		display block
+		width auto
+		float none

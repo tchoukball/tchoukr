@@ -7,8 +7,10 @@ var
     actions = [],
     teamsId = {A:null,B:null},
     indexTeams = {},
+    statsPlayers = {},
     playersDOM = {},
-    $actionList = $('#match-actions');
+    $actionList = $('#match-actions'),
+    $tablePlayersStats = $('#players-stats')
 ;
 
 function getDomFromLetter(letter){
@@ -60,12 +62,17 @@ function oppositeTeam(letter){
     return 'A';
 }
 
+function oppositeTeamId(id){
+    return teamsId[oppositeTeam(indexTeams[id])];
+}
+
 var scoreTotal ;
 function displayStats(){
 
     sortActions();
 
     scoreTotal = {A:0,B:0};
+    statsPlayers = {};
     $tchoukr.removeMarkers();
     $actionList.html("");
 
@@ -74,16 +81,24 @@ function displayStats(){
     }
 
     displayScore(scoreTotal);
+    displayPlayersStats();
+}
+
+function increasePlayerStats(team,player,stat){
+    if(! player) return ;
+    if(! statsPlayers[player]) statsPlayers[player] = {team:team,point:0,given:0,defense:0,defended:0};
+    if(! statsPlayers[player][stat]) statsPlayers[player][stat] = 0;
+    statsPlayers[player][stat]++;
 }
 
 function treatAction(action){
 
     if(! indexTeams[action._team]) return ;
 
-    var typeSign = 'defense';
+    var typeSign = 'unknown';
     action.letterTeam = indexTeams[action._team];
 
-    var shooter = action._players.shift() ;
+    var shooter = action._players[0] ;
 
     if(action.isPoint){
         scoreTotal[action.letterTeam]++ ;
@@ -95,16 +110,28 @@ function treatAction(action){
         typeSign = 'given';
     }
 
+    if(action._players.length > 1){
+        typeSign = 'defense' ;
+        for(var i in action._players)
+            if(i)
+                increasePlayerStats(oppositeTeamId(action._team),action._players[i],'defense');
+
+    }
+
+
     var fontAwesomeSign ;
     switch(typeSign){
         case'given':
             fontAwesomeSign = 'minus-circle';
+            increasePlayerStats(action._team,shooter,'given');
             break;
         case'point':
             fontAwesomeSign = 'bullseye';
+            increasePlayerStats(action._team,shooter,'point');
             break;
         case'defense':
             fontAwesomeSign = 'thumbs-down';
+            increasePlayerStats(action._team,shooter,'defended');
             break;
         default:
             fontAwesomeSign = 'circle';
@@ -150,7 +177,9 @@ function getActionComments(action){
         if(action.scoreDiff == 2)
             comments.push('+2')
     }else{
-        comments.push('defended by '+getPlayersList(teamsId[oppositeTeam(action.letterTeam)],action._players));
+        var playersList = getPlayersList(teamsId[oppositeTeam(action.letterTeam)],action._players);
+        if(playersList != "")
+            comments.push('defended by '+playersList);
     }
 
     if(action.value == 'out')
@@ -165,7 +194,9 @@ function getActionComments(action){
 function getPlayersList(team,_players){
     var p = [];
     for(var i in _players){
-        p.push(getPlayerInformations(team,_players[i]).name);
+        var player = getPlayerInformations(team,_players[i]);
+        if(player.name)
+            p.push(player.name);
     }
     return p.join(' and ');
 }
@@ -198,4 +229,43 @@ function displayScore(total){
         $('#score'+t).html(val);
 
     }
+}
+
+function getPlayerStats(){
+    var stats = [];
+    for(var pId in statsPlayers){
+        var p = statsPlayers[pId];
+        p.player = pId;
+        p.diff = p.point- p.given;
+        p.score = p.diff+p.defense ;
+        p.rank = p.score-(p.defended/2) ;
+        stats.push(p);
+    }
+    stats.sort(function(a,b){
+        return b.rank-a.rank;
+    });
+    return stats;
+}
+
+function displayPlayersStats(){
+
+    var stats = getPlayerStats();
+
+    $tablePlayersStats.html("");
+    for(var pId in stats){
+        var p = stats[pId];
+        var player = getPlayerInformations(p.team, p.player);
+        if(! player.name) continue;
+
+        var $line = $('<tr>');
+        $tablePlayersStats.append($line)
+        console.log(p);
+        $line.append($('<td>').text(player.name));
+        $line.append($('<td>').text(p.point));
+        $line.append($('<td>').text(p.given));
+        $line.append($('<td>').text(p.defense));
+        $line.append($('<td>').text(p.rank));
+
+    }
+
 }
