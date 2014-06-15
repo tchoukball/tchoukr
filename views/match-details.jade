@@ -74,10 +74,14 @@ block content
         table.player-actions
           tr
             th Name
-            th Poi
-            th Giv
-            th Def
-            th TR
+            th
+              abrev(title='Points scored') Poi
+            th
+              abrev(title='Points given to the opponent') Giv
+            th
+              abrev(title='Defenses') Def
+            th
+              abrev(title='Tchoukr Rank') TR
           tbody#players-stats
 
   if(isAdmin)

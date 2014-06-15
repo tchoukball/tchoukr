@@ -7,7 +7,7 @@ var
     express = require('express'),
     path = require('path'),
     passport = require('passport'),
-    ymlConfig = require('yaml-config')
+    ymlConfig = require('yaml-config'),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
@@ -21,7 +21,7 @@ app.set('db',require('./inc/db'));
 
 // all environments
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || conf.server.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.logger('dev'));

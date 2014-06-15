@@ -10,8 +10,11 @@ var
     statsPlayers = {},
     playersDOM = {},
     $actionList = $('#match-actions'),
-    $tablePlayersStats = $('#players-stats')
+    $tablePlayersStats = $('#players-stats'),
+    scaleTR = 10, offsetTR = 1
 ;
+
+scaleTR -= offsetTR;
 
 function getDomFromLetter(letter){
     var p = {};
@@ -242,7 +245,7 @@ function getPlayerStats(){
         stats.push(p);
     }
     stats.sort(function(a,b){
-        return b.rank-a.rank;
+        return a.rank-b.rank;
     });
     return stats;
 }
@@ -250,6 +253,11 @@ function getPlayerStats(){
 function displayPlayersStats(){
 
     var stats = getPlayerStats();
+    if(! stats.length) return;
+
+    var worstTR = stats[0].rank;
+    var bestTR = stats[stats.length-1].rank+1;
+
 
     $tablePlayersStats.html("");
     for(var pId in stats){
@@ -257,14 +265,16 @@ function displayPlayersStats(){
         var player = getPlayerInformations(p.team, p.player);
         if(! player.name) continue;
 
+        var rank = Math.ceil((p.rank-worstTR)/(bestTR-worstTR)*scaleTR)+offsetTR;
+
+
         var $line = $('<tr>');
-        $tablePlayersStats.append($line)
-        console.log(p);
+        $tablePlayersStats.prepend($line);
         $line.append($('<td>').text(player.name));
         $line.append($('<td>').text(p.point));
         $line.append($('<td>').text(p.given));
         $line.append($('<td>').text(p.defense));
-        $line.append($('<td>').text(p.rank));
+        $line.append($('<td>').text(rank));
 
     }
 
