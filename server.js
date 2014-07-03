@@ -15,9 +15,9 @@ var
 ;
 
 
-var conf = ymlConfig.readConfig('./config.yml',app.get('env'));
+var conf = ymlConfig.readConfig(__dirname + '/config.yml',app.get('env'));
 app.set('conf',conf);
-app.set('db',require('./inc/db'));
+app.set('db',require(__dirname+'/inc/db'));
 
 // all environments
 

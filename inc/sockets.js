@@ -11,9 +11,7 @@ module.exports = function(app,io){
             matchId = data.matchId ;
             console.log("Match",matchId);
             socket.join("match"+matchId);
-            socket.set('matchId',data.matchId,function () {
-                socket.emit('ready');
-            });
+            socket.emit('ready');
         });
 
         socket.on('action', function (data) {
